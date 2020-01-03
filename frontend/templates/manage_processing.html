@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Processing{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <h3>All Files To Process {{ files_to_proces_count }}</h3>
+    </div>
+
+    <br>
+
+    <div class="row">
+        
+        <table class="display" id="files_to_process_table">
+            <thead>
+                <tr>
+                    <th><h4>Time Created</h4></th>
+                    <th><h4>Study</h4></th>
+                    <th><h4>Participant</h4></th>
+                    <th><h4>S3 Path</h4></th>
+                </tr>
+            </thead>
+            <tbody id="users-table-body">
+                {% for file_to_process in files_to_process %}
+                    <tr>
+                        <td>{{ file_to_process[0] }}</td>
+                        <td>{{ file_to_process[1] }}</td>
+                        <td>{{ file_to_process[2] }}</td>
+                        <td>{{ file_to_process[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+
+{% endblock %}

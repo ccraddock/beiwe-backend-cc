@@ -1,0 +1,11 @@
+# Botocore is used for AWS command line utilities
+botocore==1.7.18
+
+# Fabric is used for running bash commands on a remote server
+fabric==1.14.0
+
+# We colorize log statements for legibility
+coloredlogs[cron]==7.3
+
+# we actually DO want the most recent version of boto3 due to the possible changes to AWS API
+boto3

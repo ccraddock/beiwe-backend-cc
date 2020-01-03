@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <script>filterableObjects = {{ studies|safe }}</script>
+    <script src="/static/javascript/app/survey-builder/controllers/filterable-list-controller.js"></script>
+{% endblock %}
+
+{% block title %}Manage Studies{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <h3>
+            All Studies
+            <a href="/create_study" class="btn btn-success pull-right">Create new study</a>
+        </h3>
+    </div>
+
+    <br>
+
+    <div id="filterableList" ng-controller="FilterableListController" class="row">
+        {# Search/filter input field #}
+        <div class="form-group col-sm-4">
+            <input type="search" class="form-control" placeholder="Filter by study name" ng-model="studyFilterText" autofocus>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><h4>Study Name</h4></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="study in filterableObjects | filter:{name: studyFilterText}">
+                    <td><b>{% raw %}{{ study.name }}{% endraw %}</b></td>
+                    <td><a href="/edit_study/{% raw %}{{ study.id }}{% endraw %}">Edit study</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <br><br>
+    
+    <div class="row">
+        <a href="/create_study" class="btn btn-success">Create new study</a>
+    </div>
+
+{% endblock %}

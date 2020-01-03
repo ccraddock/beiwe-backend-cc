@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <script>filterableObjects = {{ studies|safe }}</script>
+    <script src="/static/javascript/app/survey-builder/controllers/filterable-list-controller.js"></script>
+{% endblock %}
+
+{% block title %}Choose Study{% endblock %}
+
+{% block content %}
+    {# If this admin is authorized to view studies, list the studies #}
+    {% if studies %}
+        <div class="row">
+            <h4>You are authorized to view and edit multiple studies.  Please choose one:</h4>
+        </div>
+        <br>
+
+        <div id="filterableList" ng-controller="FilterableListController">
+
+            {# Search/filter input field #}
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <input type="search" class="form-control" placeholder="Filter by study name" ng-model="studyFilterText" autofocus>
+                </div>
+            </div>
+
+            <div class="list-group row">
+                <h4 ng-repeat="study in filterableObjects | filter:{name: studyFilterText}">
+                    <a href="/view_study/{% raw %}{{ study.id }}{% endraw %}" class="list-group-item">{% raw %}{{ study.name }}{% endraw %}</a>
+                </h4>
+            </div>
+
+        </div>
+
+    {# If this admin is not authorized to view any studies, show an error message #}
+    {% else %}
+        <h4>You are not authorized to view or edit any studies.  Please contact the administrator and ask to be added to a study!</h4>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,42 @@
+############################################################
+####################### ARCHITECTURE #######################
+############################################################
+
+Admin/Access control:
+	2 levels of users: researcher admins, and super admins.
+	super-admins
+		can create new researchers,
+		reset researchers' passwords
+		edit which studies researchers are attached to
+		delete researchers
+		create studies.
+	admins should only have survey modification rights to on surveys in studies they are assigned to.
+
+Randomized questions: surveys should be able to randomize their order
+    surveys should be able to display a subset ("ask only 10 questions")
+    -surveys should (optionally) be able to present questions totally at random
+    -surveys should (optionally) be able to present a subset that guarantees all questions are asked
+
+Surveys:
+    able to have separate surveys for each study
+    don't need a survey to be shared among multiple studies
+    surveys must be able to be scheduled:
+        once a week
+        once a day
+        multiple times per day
+
+Customizable Times:
+	-an option that can be editted on the edit survey page (not just survey creation)
+	-error-checking (this isn't mentioned in the change order)
+		for example, BLUETOOTH_ON_DURATION must be no longer than BLUETOOTH_PERIOD minus BLUETOOTH_START_TIME_IN_PERIOD.
+ 	-This is likely to be modified by the email thread about timers and data streams.
+
+Customizable wording, customizable from the admin panel at the time of study creation:
+	-Text on the "Call Clinician" buttons throughout the app.
+	-Main body text on Voice Recording screen
+	-About page text
+	-Text in the Toast that pops up after a user submits a completed survey
+	-Text in the Toast that pops up after a user submits a completed voice recording
+	(We should probably limit text inputs to ASCII-only, not Unicode characters. The survey editor interface currently (June 29, 2015) has a check for Unicode characters in 
+survey_designer.py/update_survey().)
+

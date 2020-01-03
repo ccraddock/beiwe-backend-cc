@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}View Study{% endblock %}
+
+{% block content %}
+
+     <div class="container"> 
+      <div class="span12">
+        <div class="row">
+        </div>
+        <div class="row">
+          <h2>{{ study.name }}</h2>
+          <p>ID: {{ study.object_id }}</p>
+        </div>
+      </div>
+
+      {% if study.is_test %}
+          This is a test study. Researchers will be able to download raw data and processed data output from the Data Analysis Pipeline.
+      {% else %}
+          This is a production study. Researchers will only be able to download processed data output from the Data Analysis Pipeline.
+      {% endif %}
+
+      <div class="span12">
+        <div class="row">
+          <h3>Patients</h3>
+        </div>
+
+        <table class="display" id="patients_list">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Reset password</th>
+              <th>Phone registered</th>
+              <th>Phone OS</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+
+            {% for patient in patients %}
+              <tr>
+                <td>
+                  <b>{{ patient.patient_id }}</b>
+                </td>
+                <td>
+                  <form action="/reset_participant_password" method="post">
+                    <div class="form-inline">
+                      <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+                      <input type="hidden" name="study_id" value="{{ study.id }}">
+                      <button type="submit" class="btn btn-primary btn-sm reset_password_button">Reset password</button>
+                    </div>
+                  </form>
+                </td>
+                <td>
+                  {% if patient.device_id %}
+                    <form action="/reset_device" method="post">
+                      <div class="form-inline">
+                        <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+                        <input type="hidden" name="study_id" value="{{ study.id }}">
+                        <button type="submit" class="btn btn-primary btn-sm reset_device_button">Un-Register Smartphone</button>
+                      </div>
+                    </form>
+                  {% else %}
+                    No smartphone registered
+                  {% endif %}
+                </td>
+                <td>
+                  {% if patient.os_type %}
+                    {{ patient.os_type }}
+                  {% else %}
+                    <i>unknown</i>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+        <form action="/create_new_patient" method="post">
+          <div class="form-inline pull-left">
+            <input type="hidden" name="study_id" value="{{ study.id }}">
+            <button type="submit" class="btn btn-primary add_new_patient_button">Add new patient</button>
+          </div>
+        </form>
+
+        <button type="button" class="btn btn-warning add_many_patients_button" data-toggle="modal" data-target="#addManyPatientsModal" title="Enable a number of new patients to enroll in {{ study.name }}: download a file of new Patient IDs and registration passwords">Add many new patients</button>
+        {% include 'create_many_patients_modal.html' %}
+       
+        <br/><hr><br/>
+
+        <div class="row">
+          <h3>Aliases</h3>
+        </div>
+
+        <table class="display" id="alias_list">
+          <thead>
+            <tr>
+              <th>Reference ID</th>
+              <th>Alias ID</th>
+              <th>Delete Alias</th>
+            </tr>
+          </thead>
+          <tbody id="alias-table-body">
+
+            {% for alias in aliases %}
+              <tr>
+                <td>
+                  <b>{{ alias.reference_id }}</b>
+                </td>
+                <td>
+                  <b>{{ alias.alias_id }}</b>
+                </td>
+                <td>
+                  <form action="/delete_alias" method="post">
+                    <div class="form-inline">
+                      <input type="hidden" name="alias_id" value="{{ alias.id }}">
+                      <input type="hidden" name="study_id" value="{{ study.id }}">
+                      <button type="submit" class="btn btn-danger btn-sm reset_password_button">Delete</button>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+
+           </tbody>
+        </table>
+
+        <form action="/create_new_alias/{{ study.id }}" method="get">
+          <div class="form-inline pull-left">
+            <button type="submit" class="btn btn-primary add_new_patient_button">Add new alias mapping</button>
+          </div>
+        </form>
+
+        <br/><hr><br/>
+
+        <div class="row">
+          <h3>Surveys</h3>
+
+          <div class="list-group">
+            {# If there are surveys attached to this study, list them #}
+            {% if tracking_survey_ids %}
+              {% for ids in tracking_survey_ids %}
+                <h4><a href="/edit_survey/{{ids[0]}}" class="list-group-item">{{ids[2]}}</a></h4>
+              {% endfor %}
+            {# If there aren't surveys attached to this study, show a message saying "no surveys" #}
+            {% else %}
+              <p><b>This study does not have any surveys.</b></p>
+            {% endif %}
+          </div>
+
+          {# TODO: Josh, make this pass in the study ID #}
+          <form action="/create_survey/{{ study.id }}/tracking_survey" method="get">
+            <div class="form-inline pull-left">
+              <button type="submit" class="btn btn-primary add_new_survey_button">Create new survey</button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="row">
+          <h3>Audio Surveys</h3>
+
+          <div class="list-group">
+            {# If there are surveys attached to this study, list them #}
+            {% if audio_survey_ids %}
+              {% for ids in audio_survey_ids %}
+                <h4><a href="/edit_survey/{{ids[0]}}" class="list-group-item">{{ids[2]}}</a></h4>
+              {% endfor %}
+            {# If there aren't surveys attached to this study, show a message saying "no surveys" #}
+            {% else %}
+              <p><b>This study does not have any audio surveys.</b></p>
+            {% endif %}
+          </div>
+          <a href="/create_survey/{{ study.id }}/audio_survey" class="btn btn-info">Create new <b>audio survey</b></a>
+        </div>
+
+        <div class="row">
+          <h3>Image Surveys</h3>
+
+          <div class="list-group">
+            {# If there are surveys attached to this study, list them #}
+            {% if image_survey_ids %}
+              {% for ids in image_survey_ids %}
+                <h4><a href="/edit_survey/{{ids[0]}}" class="list-group-item">{{ids[2]}}</a></h4>
+              {% endfor %}
+            {# If there aren't surveys attached to this study, show a message saying "no surveys" #}
+            {% else %}
+              <p><b>This study does not have any image surveys.</b></p>
+            {% endif %}
+          </div>
+          <a href="/create_survey/{{ study.id }}/image_survey" class="btn btn-info">Create new <b>image survey</b></a>
+        </div>
+
+        <div class="row">
+            <h3>App settings</h3>
+            <p><a href="/device_settings/{{ study['id'] }}">View the types of data this study collects and the wording that study participants see in the app</a></p>
+        </div>
+
+        <div class="row">
+          <h3>Data Pipeline</h3>
+          <p><a href="/data-pipeline/{{ study.id }}">View the data pipeline information for this study</a></p>
+        </div>
+
+        <div class="row">
+          <h3>Received Data Statistics</h3>
+          <p><a href="/view_statistics/{{ study.id }}">View view statistics on data received for this study</a></p>
+        </div>
+
+      </div>
+  </div>
+
+{% endblock %}

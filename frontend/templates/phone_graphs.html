@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rendered graph for user</title>
+    <link rel="stylesheet" href="/static/css/phone-jqplot.css">
+    <script type="text/javascript" src="/static/javascript/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="/static/javascript/jqplot/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jqplot/plugins/jqplot.highlighter.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/graph.js"></script>
+  </head>
+  <body>
+    <div id="chart1" style="margin-top:20px; margin-left:20px; width:400px; height:400;"></div>
+    <br>
+    <div style="margin-top:20px; margin-left:20px; width:400px; height:200px; text-align:center; padding: 100px 0px 0px 0px;">
+      {% for responses in data %}
+        <h4> View question history for survey {{ loop.index }} </h3>
+        <!-- There actually is a way to make this section better. For now, keep like this.. -->
+        {% for i in range ( responses|length ) %}
+          <!-- creates a button, each button contains title, [coordinates].
+          note: null answers are ignored by stepping over it on the X axis, if all values are null the graph works but has no data points. -->
+          <button type="button" onClick="replot_user_results({{ responses[i][0] }} , {{ [responses[i][1]] }})">Question {{i + 1}}</button>
+          {% if ((i + 1) is divisibleby 3) %} <br> {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </body>
+</html>

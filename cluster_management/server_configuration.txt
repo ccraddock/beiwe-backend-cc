@@ -1,0 +1,102 @@
+server configuration
+
+ssh keys:
+    need to push the deployment key private into .ssh with name id_rsa	DONE
+
+push:
+    bash_profile to .profile	DONE
+        it seems like .bashrc is overwriting some of the .profile aliases (e.g. ll)
+    .inputrc to .inputrc	DONE
+    unattended upgrades?
+    our cron operations...
+
+cron:
+
+sudo apt-get install:	ALL DONE
+    moreutils (for cron)
+    sendmail
+    silversearcher-ag 0.31.0.2 because AJK is used to it. I'm picky, gosh
+    libssl-dev 1.0.2
+    libreadline-gplv2-dev 5.2
+    libbz2-dev 1.0.6-8
+    libsqlite3-dev 3.11.0
+
+pyenv:	ALL DONE
+    #https://github.com/pyenv/pyenv/wiki/Common-build-problems if any issues
+    ../pushed_files/install_pyenv.sh  #install pyenv
+    #the next three lines may not be necessary
+    echo 'export PATH="/home/ubuntu/.pyenv/bin:$PATH"' >> ~/.profile  #add pyenv to PATH
+    echo 'eval "$(pyenv init -)"' >> ~/.profile  #add pyenv python versions to PATH
+    source ~/.profile  #this might not work with fabric: test and find out
+    pyenv install 2.7.14  #install latest python 2 version  #this is slow (~75 seconds)
+    pyenv global 2.7.14  #set all python to default to that version
+    python --version  #to check that it worked; should read "2.7.14"
+    pip install --upgrade pip
+    pip install -r Requirements.txt
+
+AJK: not relevant yet
+construct and push:
+    config/remote_db_env.py
+    config/env?
+    TODO: we need to cram all env settings into remote_db_env.py, and push them all
+
+
+local requirements:
+    researcher should run everything from .../cluster_management$
+    pip install -r launch_requirements.txt
+    python launch_script.py
+
+
+aws credential requirements:
+    administrator
+    AdministratorAccess
+    IAM PassRole Action
+
+
+AWS user permissions required to run this script????
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "ec2:*",
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Action": "elasticbeanstalk:*",
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+    ]
+}
+
+server instance profile (iam permissions beiwe requires in order to run)
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BucketAccess",
+      "Action": [
+        "s3:Get*",
+        "s3:List*",
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::elasticbeanstalk-*",
+        "arn:aws:s3:::elasticbeanstalk-*/*"
+      ]
+    },
+    {
+      "Sid": "CloudWatchLogsAccess",
+      "Action": [
+        "logs:PutLogEvents",
+        "logs:CreateLogStream"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk*"
+      ]
+    }
+  ]
+}

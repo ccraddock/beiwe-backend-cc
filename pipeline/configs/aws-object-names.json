@@ -1,0 +1,13 @@
+{
+  "access_key_ssm_name": "beiwe-daa-key-0",
+  "ami_name": "data-pipeline-ami",
+  "comp_env_name": "data-pipeline-env",
+  "comp_env_role": "AWSBatchServiceRole",
+  "ecr_repo_name": "data-pipeline-docker",
+  "instance_profile": "ecsInstanceRole",
+  "job_defn_name": "data-pipeline-job-defn",
+  "job_name": "data-pipeline-{freq}-job",
+  "queue_name": "data-pipeline-queue",
+  "secret_key_ssm_name": "beiwe-daa-key-1",
+  "security_group": "data-pipeline-security-group"
+}

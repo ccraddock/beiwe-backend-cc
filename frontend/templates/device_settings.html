@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+    <li>
+        <a href="/view_study/{{ study.id }}">{{ study.name }}</a>
+    </li>
+    <li class="active">
+        App Settings
+    </li>
+</ol>
+
+<div class="row">
+    {% if readonly %}
+        <h2>App settings for study</h2>
+    {% else %}
+        <h2>Edit app settings for study</h2>
+    {% endif %}
+</div>
+
+{% if readonly %}
+    <div>
+{% else %}
+    <form action="/device_settings/{{ study.id }}" method="POST">
+{% endif %}
+    <div class="row form-horizontal">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="accelerometer" class="col-xs-8 control-label">Accelerometer:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="accelerometer" id="accelerometer" type="checkbox" {{ "checked" if settings["accelerometer"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gps" class="col-xs-8 control-label">GPS:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="gps" id="gps" type="checkbox" {{ "checked" if settings["gps"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="calls" class="col-xs-8 control-label">Calls:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="calls" id="calls" type="checkbox" {{ "checked" if settings["calls"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="texts" class="col-xs-8 control-label">Texts:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="texts" id="texts" type="checkbox" {{ "checked" if settings["texts"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="proximity" class="col-xs-8 control-label">Proximity:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="proximity" id="proximity" type="checkbox" {{ "checked" if settings["proximity"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gyro" class="col-xs-8 control-label">Gyro:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="gyro" id="gyro" type="checkbox" {{ "checked" if settings["gyro"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="magnetometer" class="col-xs-8 control-label">Magnetometer:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="magnetometer" id="magnetometer" type="checkbox" {{ "checked" if settings["magnetometer"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="devicemotion" class="col-xs-8 control-label">Device Motion:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="devicemotion" id="devicemotion" type="checkbox" {{ "checked" if settings["devicemotion"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="reachability" class="col-xs-8 control-label">Reachability:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="reachability" id="reachability" type="checkbox" {{ "checked" if settings["reachability"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="wifi" class="col-xs-8 control-label">WiFi:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="wifi" id="wifi" type="checkbox" {{ "checked" if settings["wifi"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bluetooth" class="col-xs-8 control-label">Bluetooth:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="bluetooth" id="bluetooth" type="checkbox" {{ "checked" if settings["bluetooth"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="power_state" class="col-xs-8 control-label">Power state:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="power_state" id="power_state" type="checkbox" {{ "checked" if settings["power_state"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="check_for_new_surveys_frequency_seconds" class="col-xs-8 control-label">Check for new surveys frequency:</label>
+                <div class="col-xs-4">
+                    <input id="check_for_new_surveys_frequency_seconds" name="check_for_new_surveys_frequency_seconds" class="form-control" type="number" placeholder="Enter frequency here (seconds)" value="{{ settings['check_for_new_surveys_frequency_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="create_new_data_files_frequency_seconds" class="col-xs-8 control-label">Create new data files frequency:</label>
+                <div class="col-xs-4">
+                    <input id="create_new_data_files_frequency_seconds" name="create_new_data_files_frequency_seconds" class="form-control" type="number" placeholder="Enter frequency here (seconds)" value="{{ settings['create_new_data_files_frequency_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="upload_data_files_frequency_seconds" class="col-xs-8 control-label">Upload data files frequency:</label>
+                <div class="col-xs-4">
+                    <input id="upload_data_files_frequency_seconds" name="upload_data_files_frequency_seconds" class="form-control" type="number" placeholder="Enter frequency here (seconds)" value="{{ settings['upload_data_files_frequency_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="allow_upload_over_cellular_data" class="col-xs-8 control-label">Allow data upload over a cellular data plan: </label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="allow_upload_over_cellular_data" id="allow_upload_over_cellular_data" type="checkbox" {{ "checked" if settings["allow_upload_over_cellular_data"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="use_anonymized_hashing" class="col-xs-8 control-label">Use anonymized phone number and MAC address encryption:</label>
+                <div class="col-xs-4 checkbox checkbox-custom">
+                    <label>
+                        <input name="use_anonymized_hashing" id="use_anonymized_hashing" type="checkbox" {{ "checked" if settings["use_anonymized_hashing"] }} {{ "disabled" if readonly }}/>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="accelerometer_on_duration_seconds" class="col-xs-8 control-label">Accelerometer <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="accelerometer_on_duration_seconds" name="accelerometer_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['accelerometer_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="accelerometer_off_duration_seconds" class="col-xs-8 control-label">Accelerometer <b>off</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="accelerometer_off_duration_seconds" name="accelerometer_off_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['accelerometer_off_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gps_on_duration_seconds" class="col-xs-8 control-label">GPS <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="gps_on_duration_seconds" name="gps_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['gps_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gps_off_duration_seconds" class="col-xs-8 control-label">GPS <b>off</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="gps_off_duration_seconds" name="gps_off_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['gps_off_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gyro_on_duration_seconds" class="col-xs-8 control-label">Gyro <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="gyro_on_duration_seconds" name="gyro_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['gyro_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gyro_off_duration_seconds" class="col-xs-8 control-label">Gyro <b>off</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="gyro_off_duration_seconds" name="gyro_off_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['gyro_off_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="magnetometer_on_duration_seconds" class="col-xs-8 control-label">Magnetometer <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="magnetometer_on_duration_seconds" name="magnetometer_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['magnetometer_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="magnetometer_off_duration_seconds" class="col-xs-8 control-label">Magnetometer <b>off</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="magnetometer_off_duration_seconds" name="magnetometer_off_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['magnetometer_off_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="devicemotion_on_duration_seconds" class="col-xs-8 control-label">DeviceMotion <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="devicemotion_on_duration_seconds" name="devicemotion_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['devicemotion_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="devicemotion_off_duration_seconds" class="col-xs-8 control-label">DeviceMotion <b>off</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="devicemotion_off_duration_seconds" name="devicemotion_off_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['devicemotion_off_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bluetooth_on_duration_seconds" class="col-xs-8 control-label">Bluetooth <b>on</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="bluetooth_on_duration_seconds" name="bluetooth_on_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['bluetooth_on_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bluetooth_total_duration_seconds" class="col-xs-8 control-label">Bluetooth <b>total</b> duration:</label>
+                <div class="col-xs-4">
+                    <input id="bluetooth_total_duration_seconds" name="bluetooth_total_duration_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['bluetooth_total_duration_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bluetooth_global_offset_seconds" class="col-xs-8 control-label">Bluetooth global offset:</label>
+                <div class="col-xs-4">
+                    <input id="bluetooth_global_offset_seconds" name="bluetooth_global_offset_seconds" class="form-control" type="number" placeholder="Enter offset here (seconds)" value="{{ settings['bluetooth_global_offset_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="wifi_log_frequency_seconds" class="col-xs-8 control-label">WiFi log frequency:</label>
+                <div class="col-xs-4">
+                    <input id="wifi_log_frequency_seconds" name="wifi_log_frequency_seconds" class="form-control" type="number" placeholder="Enter frequency here (seconds)" value="{{ settings['wifi_log_frequency_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="voice_recording_max_time_length_seconds" class="col-xs-8 control-label">Voice recording max time duration:</label>
+                <div class="col-xs-4">
+                    <input id="voice_recording_max_time_length_seconds" name="voice_recording_max_time_length_seconds" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['voice_recording_max_time_length_seconds'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="seconds_before_auto_logout" class="col-xs-8 control-label">Duration before auto-logout:</label>
+                <div class="col-xs-4">
+                    <input id="seconds_before_auto_logout" name="seconds_before_auto_logout" class="form-control" type="number" placeholder="Enter duration here (seconds)" value="{{ settings['seconds_before_auto_logout'] }}" {{ "disabled" if readonly }}>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="call_clinician_button_text">Text that appears on the app's "Call My Clinician" button:</label>
+                <input type="text" name="call_clinician_button_text" id="call_clinician_button_text" class="form-control" value="{{settings['call_clinician_button_text']}}" {{ "disabled" if readonly }}>
+            </div>
+            <div class="form-group">
+                <label for="about_page_text">Text on the app's "About" page:</label>
+                <textarea name="about_page_text" id="about_page_text" class="form-control" rows="20" cols="120" {{ "disabled" if readonly }}>{{settings['about_page_text']}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="consent_form_text">Text that appears in the app's consent form:</label>
+                <textarea name="consent_form_text" id="consent_form_text" class="form-control" rows="20" cols="120" {{ "disabled" if readonly }}>{{settings['consent_form_text']}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="survey_submit_success_toast_text">Text that appears in the pop-up message (called an Android "Toast") when a survey is submitted:</label>
+                <textarea name="survey_submit_success_toast_text" id="survey_submit_success_toast_text" class="form-control" rows="3" cols="120" {{ "disabled" if readonly }}>{{settings['survey_submit_success_toast_text']}}</textarea>
+            </div>
+            {% for section, section_title in { "welcome": "Welcome", "data_gathering": "Data Gathering", "privacy": "Privacy", "time_commitment": "Time Commitment",
+                "study_survey": "Study Survey", "study_tasks": "Study Tasks", "withdrawing": "Withdrawing" }.iteritems() %}
+                <div class="form-group">
+                    <label for="{{section}}_summary">iOS consent {{section_title}} text:</label>
+                    <textarea name="consent_sections.{{section}}.text" id="{{section}}_summary" class="form-control" rows="4" cols="120" {{ "disabled" if readonly }}>{{settings['consent_sections'][section]['text']}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="{{section}}_more">iOS consent {{section_title}} learn more:</label>
+                    <textarea name="consent_sections.{{section}}.more" id="{{section}}_more" class="form-control" rows="4" cols="120" {{ "disabled" if readonly }}>{{settings['consent_sections'][section]['more']}}</textarea>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if not readonly %}
+        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+    {% endif %}
+{% if readonly %}
+    </div>
+{% else %}
+    </form>
+{% endif %}
+{% endblock %}

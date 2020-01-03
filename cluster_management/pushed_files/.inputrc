@@ -1,0 +1,9 @@
+## arrow up
+"\e[A":history-search-backward
+## arrow down
+"\e[B":history-search-forward
+
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+set completion-ignore-case on

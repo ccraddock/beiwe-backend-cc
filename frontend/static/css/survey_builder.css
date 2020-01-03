@@ -1,0 +1,16 @@
+th, td {
+	padding: 5px;
+}
+
+.time-label {
+	font-size: 1em;
+}
+
+.tablecell-align-top {
+	vertical-align: top;
+}
+
+.add-logic-button {
+	margin-top: 1px;
+	margin-bottom: 2px;
+}

@@ -1,0 +1,58 @@
+<div class="row">
+
+  <h3>Schedule</h3>
+
+  <input type="checkbox" name="trigger_on_first_download" id="trigger_on_first_download"
+  {% if survey.settings['trigger_on_first_download'] %} checked {% endif %}>
+
+  &nbsp; <label for="trigger_on_first_download"><b> Show survey notification immediately</b> </label> when the user downloads this survey. (Will also trigger this survey right after registration.) <br>
+  
+  <p>Add new scheduled time (type numbers into the pop-up time picker):</p>
+
+  <div class="form-inline bootstrap-timepicker timepicker">
+    <input id="new_time_timepicker" type="text" class="form-control schedule-timepicker">
+    <i class="glyphicon glyphicon-time"></i>
+
+    &nbsp;
+    <select id="day_index_select" name="day">
+      <option value="every_day">EVERY DAY</option>
+      <option value=0>Sunday</option>
+      <option value=1>Monday</option>
+      <option value=2>Tuesday</option>
+      <option value=3>Wednesday</option>
+      <option value=4>Thursday</option>
+      <option value=5>Friday</option>
+      <option value=6>Saturday</option>
+    </select>
+
+    &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-info" onclick="add_time()"><span class="glyphicon glyphicon-plus"></span>Add time</button>
+  </div>
+</div>
+
+{% raw %}
+  <script id="schedule-template" type="text/x-handlebars-template">
+  <br>
+  <p>Currently scheduled times:</p>
+  <div class="well well-sm">    
+    <table>
+      {{#each schedules}}
+      <tr>
+
+        <th><b>{{day_name}}</b></th>
+
+        {{#each times}}
+        <td>
+          <b><span class="label label-info time-label">
+            {{int_to_time this}}
+            <i class="remove glyphicon glyphicon-remove" onclick="delete_time({{@../index}}, {{@index}})" title="Delete this time"></i>
+          </span></b>
+        </td>
+        {{/each}}
+
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+  </script>
+{% endraw %}

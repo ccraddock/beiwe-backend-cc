@@ -1,0 +1,7 @@
+{
+  "DEPLOYMENT_KEY_NAME": "stick the name of the deployment key you created here",
+  "DEPLOYMENT_KEY_FILE_PATH": "absolute file path to your private component of the key above",
+  "VPC_ID": "stick the default vpc id for the region you are in here",
+  "AWS_REGION": "something like us-east-2",
+  "SYSTEM_ADMINISTRATOR_EMAIL": "example@example.com"
+}

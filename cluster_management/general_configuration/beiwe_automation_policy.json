@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:*",
+        "elasticloadbalancing:*",
+        "elasticbeanstalk:*",
+        "autoscaling:*",
+        "s3:*",
+        "rds:*",
+        "iam:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}   

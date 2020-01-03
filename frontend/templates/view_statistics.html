@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}View Study Statistics{% endblock %}
+
+{% block content %}
+
+     <div class="container"> 
+      <div class="span12">
+        <div class="row">
+        </div>
+        <div class="row">
+          <h2>{{ study.name }}</h2>
+          <p>ID: {{ study.object_id }}</p>
+        </div>
+      </div>
+
+      <div class="span12">
+        <div class="row">
+          <h3>Total Upload Statistics</h3>
+        </div>
+
+        <table class="display" id="total_upload_stats">
+          <thead>
+            <tr>
+              <th>Data Type</th>
+              <th>Number of Uploads</th>
+              <th>Total size of Uploads</th>
+            </tr>
+          </thead>
+
+          <tbody id="total_upload_stats-table-body">
+
+            {% for data_type in data_types %}
+              <tr>
+                <td>
+                  <b>{{ data_types[data_type] }}</b>
+                </td>
+                {% if data_type in received_data_stats_totals %}
+                    {% if 'number_of_uploads' in received_data_stats_totals[data_type] %}
+                        <td>
+                          <b>{{ received_data_stats_totals[data_type]['number_of_uploads'] }}</b>
+                        </td>
+                    {% else %} 
+                        <td>
+                          <b>None</b>
+                        </td>
+                    {% endif %}
+                    {% if 'size_string' in received_data_stats_totals[data_type] %}
+                        <td>
+                          <b>{{ received_data_stats_totals[data_type]['size_string'] }}</b>
+                        </td>
+                    {% else %}
+                        <td>
+                          <b>None</b>
+                        </td>
+                    {% endif %}
+                {% else %}
+                    <td>
+                      <b>None</b>
+                    </td>
+                    <td>
+                      <b>None</b>
+                    </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="span12">
+        <div class="row">
+          <h3>Participant Upload Statistics</h3>
+        </div>
+
+        <table class="display" id="patients_statistics">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Phone OS</th>
+              <th>Days since last contact</th>
+              {% for data_type in data_types %}
+                  <th>{{ data_types[data_type] }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+
+          <tbody id="received-statistics-table-body">
+
+            {% for patient in patients %}
+              <tr>
+                <td>
+                  <b>{{ patient.patient_id }}</b>
+                </td>
+                <td>
+                  {% if patient.os_type %}
+                    {{ patient.os_type }}
+                  {% else %}
+                    <i>unknown</i>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if patient.patient_id in received_data_stats %}
+                      {% if 'days_since_last_contact' in received_data_stats[patient.patient_id] %}
+                          {{ received_data_stats[patient.patient_id]['days_since_last_contact'] }}
+                      {% else %}
+                         999
+                      {% endif %}
+                  {% else %}
+                     999
+                  {% endif %}
+                </td>
+                {% for data_type in data_types %}
+                    <td>
+                      {% if patient.patient_id in received_data_stats %}
+                          {% if data_type in received_data_stats[patient.patient_id] %}
+                              {% if 'stats_color' in received_data_stats[patient.patient_id][data_type] and 'stats_string' in received_data_stats[patient.patient_id][data_type] %}
+                                   <button type="button" class="btn {{ received_data_stats[patient.patient_id][data_type]['stats_color'] }}">{{ received_data_stats[patient.patient_id][data_type]['stats_string'] }}</button>
+                              {% else %}
+                                  <button type="button" class="btn btn-danger">None</button>
+                              {% endif %}
+                          {% else %}
+                              <button type="button" class="btn btn-danger">None</button>
+                          {% endif %}
+                      {% else %}
+                        <button type="button" class="btn btn-danger">None</button>
+                      {% endif %}
+                    </td>
+                {% endfor %}
+
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
+  </div>
+
+{% endblock %}

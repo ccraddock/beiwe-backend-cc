@@ -1,0 +1,22 @@
+<div class="form-inline">
+  Answer to
+  <select class="form-control" ng-model="surveyBuilder.getValueAtPath(path)[type][0]"
+          ng-options="getQuestionNumber(questionId) for questionId in surveyBuilder.questionIds|filter: '!' + currentQuestionId">
+  </select>
+  <select class="form-control" ng-change="surveyBuilder.updateOperatorAtPath(path, this)"
+          ng-model="type" ng-options="operator for operator in ARITHMETIC_OPERATORS">
+  </select>
+  <input type="number" class="form-control" ng-model="surveyBuilder.getValueAtPath(path)[type][1]">
+  <button class="close pull-right" style="line-height: 34px;"
+          ng-click="surveyBuilder.deleteBlock(path)">
+    &times;
+  </button>
+  <!-- Uncomment this code for debugging -->
+  <!--<div style="color: #eaeaea; font-size: 12px; line-height: 12px;">
+    <br>
+    var path = '{{ path }}';
+    var type = '{{ type }}';
+    var valueAtPath = '{{ surveyBuilder.getValueAtPath(path) }}';
+  </div>-->
+  <!-- /Uncomment this code for debugging -->
+</div>

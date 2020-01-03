@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Run Pipeline{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/css/libraries/bootstrap-datetimepicker.css"  type="text/css"/>
+  <script type="text/javascript" src="../static/javascript/libraries/moment.js"></script>
+  <script type="text/javascript" src="../static/javascript/libraries/transition.js"></script>
+  <script type="text/javascript" src="../static/javascript/libraries/collapse.js"></script>
+  <script type="text/javascript" src="../static/javascript/libraries/bootstrap-datetimepicker.js"></script>
+  <script type="text/javascript" src="../static/javascript/data_download_page.js"></script>
+  <script>
+    var studyParticipants = {{ study_participants|safe }};
+  </script>
+  <script src="/static/javascript/app/survey-builder/controllers/data-pipeline-exec-web-form-controller.js"></script>
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="span12">
+      <div class="row">
+        <h2>{{ study.name }} Data pipelines</h2>
+      </div>
+    </div>
+
+        <table class="display" id="pipelines_list">
+          <thead>
+            <tr>
+              <th>Cancel</th>
+              <th>Pipeline ID</th>
+              <th>Owner</th>
+              <th>Submission time</th>
+              <th>State</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Execution Time (min)</th>
+              <th>Execution Error Text</th>
+              <th>Query Start Time</th>
+              <th>Query End Time</th>
+              <th>Pts to Process</th>
+              <th>Email address for status updates</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+
+            {% for pipeline in pipelines %}
+              <tr>
+                <td>
+                    {% if pipeline.execution_status == "queued" or pipeline.execution_status == "running" %}
+                        <form action="/terminate-pipeline/{{ study.id }}" method="post">
+                            <div class="form-inline">
+                                <input type="hidden" name="pipeline_id" value="{{ pipeline.id }}">
+                                <button type="submit" class="btn btn-primary btn-sm reset_password_button">Terminate Pipeline</button>
+                            </div>
+                        </form>
+                    {% elif pipeline.execution_status == "completed" %}
+                        <form action="/pipeline_access_web_form" method="get">
+                            <div class="form-inline">
+                                <input type="hidden" name="pipeline_id" value="{{ pipeline.id }}">
+                                <input type="hidden" name="study_id" value="{{ study.id }}">
+                                <button type="submit" class="btn btn-success btn-sm">Download</button>
+                            </div>
+                        </form>
+                     {% else %}
+                        <button type="submit" class="btn btn-danger btn-sm">{{ pipeline.execution_status }}</button>
+                     {% endif %}
+                </td>
+                <td>
+                  <b>{{ pipeline.id }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.researcher.username }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.pipeline_submission_timestamp }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.execution_status }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.execution_start_datetime }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.execution_end_datetime }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.execution_time_minutes }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.execution_error_text }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.query_start_datetime }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.query_end_datetime }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.participants }}</b>
+                </td>
+                <td>
+                  <b>{{ pipeline.email_address_list }}</b>
+                </td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+
+
+    
+    <div class="span12">
+      <div class="row">
+        <h3>Run data pipeline code</h3>
+        <form action="/run-manual-code/{{ study.id }}" method="post" id="data_download_parameters_form">
+          <input type="hidden" name="study_id" value="{{ study.id }}">
+
+            <div class="form-group">
+               <label for="destination_email_addresses">Email address to notify on pipeline completion</label>
+               <input type="text" name="destination_email_addresses" id="destination_email_addresses" class="form-control">
+            </div>
+
+            <div class="form-group">
+               <label for="start_datetime">Start date and time for data to be processed.</label>
+               <div class="input-group date" id="start_datetimepicker">
+                  <input type="text" class="form-control" name="time_start" id="start_datetime" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+            </div>
+
+            {# End Datetime #}
+           <div class="form-group">
+              <label for="end_datetime">End date and time for data to be processed.</label>
+                <div class="input-group date" id="end_datetimepicker">
+                  <input type="text" class="form-control" name="time_end" id="end_datetime" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+           </div>
+
+           <div ng-controller="DataPipelineExecWebFormController">
+            {# Patient Selector #}
+           <div class="form-group">
+               <label for="patient_selector">Participants</label>
+               <select id="patient_selector" ng-model="selectedPatient" ng-options="participant for participant in studyParticipants | orderBy : participant track by participant" name="participants" class="form-control" size=12 multiple></select>
+           </div>
+           </div>
+
+           <!-- <button type="submit" class="btn btn-primary download_submit_button">Run manually</button> -->
+           <input type="submit" class="btn btn-success" value="Schedule Pipeline" id="download_submit_button" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

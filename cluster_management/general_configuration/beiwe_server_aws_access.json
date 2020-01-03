@@ -1,0 +1,25 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "statement1",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::%s*"
+            ]
+        },
+        {
+            "Sid": "statement2",
+            "Effect": "Allow",
+            "Action": "ssm:PutParameter",
+            "Resource": "*"
+        },
+        {
+            "Sid": "statement3",
+            "Effect": "Allow",
+            "Action": "batch:SubmitJob",
+            "Resource": "*"
+        }
+    ]
+}

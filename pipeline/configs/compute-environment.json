@@ -1,0 +1,7 @@
+{
+  "type": "EC2",
+  "minvCpus": 0,
+  "desiredvCpus": 2,
+  "maxvCpus": 32,
+  "instanceTypes": ["r5"]
+}

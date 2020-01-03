@@ -1,0 +1,13 @@
+survey settings strings
+
+trigger_on_first_download: Boolean
+	set to true to make a survey display when it is first downloaded
+
+randomize: Boolean
+	set to true to randomize a survey (by default with replacement, without memory).  if not present the app defaults to false.
+
+randomize_with_memory: Boolean
+	if present, modifies behavior of randomize to do so with memory.  ignored if randomize is false or not present.
+
+number_of_random_questions: int
+	sets the number of questions that will be displayed of the random set.  set to 0 to display all.  if not present the app defaults to 0.  if greater than number of questions app will default to 0.

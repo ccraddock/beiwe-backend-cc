@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Researcher{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <h3>Add New Researcher</h3>
+    </div>
+
+    <br>
+
+    <div class="row col-md-4">
+        <form action="/create_new_researcher" method="post">
+        	<div class="form-group">
+        		<label for="admin_id">Username</label>
+	            <input type="text" name="admin_id" id="admin_id" class="form-control">
+          	</div>
+          	<div class="form-group">
+          		<label for="password">Password</label>
+          		<input type="text" name="password" id="password" class="form-control">
+          	</div>
+	        <input type="submit" class="btn btn-success" value="Add new researcher">
+
+	        <a href="/manage_researchers" class="btn btn-warning pull-right">Cancel</a>
+
+        </form>
+    </div>
+
+{% endblock %}

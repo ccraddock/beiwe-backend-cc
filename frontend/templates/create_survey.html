@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Survey{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <h3>Add New Survey</h3>
+    </div>
+
+    <br>
+
+    <div class="row col-md-4">
+        <form action="/create_survey/{{ study_id }}/{{ survey_type }}" method="post">
+        	<div class="form-group">
+        		<label for="survey_name">Survey Name</label>
+	            <input type="text" name="survey_name" id="survey_name" class="form-control">
+          	</div>
+	        <input type="submit" class="btn btn-success" value="Add new survey">
+
+	        <a href="/view_study/{{ study_id }}" class="btn btn-warning pull-right">Cancel</a>
+
+        </form>
+    </div>
+
+{% endblock %}
